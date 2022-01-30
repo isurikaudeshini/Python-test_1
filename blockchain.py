@@ -38,18 +38,25 @@ def print_blockchain_elements():
         print('-'*20)
     
 def verify_chain():
-    block_index = 0
+    #block_index = 0
     is_valid = True
-    for block in blockchain:
+    for block_index in range(len(blockchain)):
         if block_index == 0:
-            block_index += 1
             continue
-        if block[0] == blockchain[block_index -1 ]:
+        elif blockchain[block_index][0] == blockchain[block_index -1 ]:
             is_valid = True
         else:
-            is_valid = False
-            break
-        block_index += 1
+             is_valid = False
+
+    #     if block_index == 0:
+    #         block_index += 1
+    #         continue
+    #     elif block[0] == blockchain[block_index -1 ]:
+    #         is_valid = True
+    #     else:
+    #         is_valid = False
+    #         break
+    #     block_index += 1
     return is_valid
 
 waiting_for_input = True
@@ -74,9 +81,10 @@ while waiting_for_input:
     else:
         print('Input was invalid, please pick a value from the list. ')
     if not verify_chain():
+        print_blockchain_elements()
         print('Invalid blockchain, please try again.')
         break
 else:
-    print('User left!')
+    print('User left')
 
 print('Done!')
