@@ -1,7 +1,13 @@
-#initializing the list
+# initializing the genesis block, very first one
+genesis_block ={
+    'previous hash': '',
+    'index': 0,
+    'transactions': []
+}
 blockchain = []
 open_transactions = []
 owner = 'Isurika'
+
 
 def get_last_blockchain_value():
     """Returns the last value of the current block chain"""
@@ -9,7 +15,8 @@ def get_last_blockchain_value():
         return None
     return blockchain[-1]
 
-def add_transaction( recipient, sender=owner, amount=1.0):
+
+def add_transaction(recipient, sender=owner, amount=1.0):
     """Append a new value as well as the last blockchain value to the blockchain
 
     Arguments:
@@ -17,25 +24,35 @@ def add_transaction( recipient, sender=owner, amount=1.0):
         :recipient: The recipient of the coins
         :amount: The amount of coins sent with the transaction (default 1.0)
     """
-    transaction ={
-        'sender': sender, 
-        'recipient': recipient, 
+    transaction = {
+        'sender': sender,
+        'recipient': recipient,
         'amount': amount
-        }   #A dictionary has been used to store transaction data
+    }  # A dictionary has been used to store transaction data
     open_transactions.append(transaction)
 
+
 def mine_block():
-    pass
+    last_block = blockchain[-1]
+    block = {
+        'previous hash': 'xyz',
+        'index': len(blockchain),
+        'transactions': open_transactions
+    }
+    blockchain.append(block)
+
 
 def get_transaction_value():
     """Returns the input of the user.(a new transaction amount)"""
-    #get the user input, transform 
-    
+    # get the user input, transform
+
     tx_recipient = input('Enter the recipient of the transaction:  ')
     tx_amount = float(input('plz enter your transaction amount:  '))
 
-    return tx_recipient, tx_amount   #This is a tuple, can also wrap it with paranthesis, worthless having empty paranthesis,
-                                     # when having one value "(tx_amount, )""
+    # This is a tuple, can also wrap it with paranthesis, worthless having empty paranthesis,
+    return tx_recipient, tx_amount
+    # when having one value "(tx_amount, )""
+
 
 def get_user_choice():
     user_input = input('Your choice:  ')
@@ -49,17 +66,18 @@ def print_blockchain_elements():
         print(block)
     else:
         print('-'*20)
-    
+
+
 def verify_chain():
     #block_index = 0
     is_valid = True
     for block_index in range(len(blockchain)):
         if block_index == 0:
             continue
-        elif blockchain[block_index][0] == blockchain[block_index -1 ]:
+        elif blockchain[block_index][0] == blockchain[block_index - 1]:
             is_valid = True
         else:
-             is_valid = False
+            is_valid = False
 
     #     if block_index == 0:
     #         block_index += 1
@@ -72,6 +90,7 @@ def verify_chain():
     #     block_index += 1
     return is_valid
 
+
 waiting_for_input = True
 
 while waiting_for_input:
@@ -83,7 +102,7 @@ while waiting_for_input:
     user_choice = get_user_choice()
     if user_choice == '1':
         tx_data = get_transaction_value()
-        recipient, amount = tx_data             #unpacking the tuple
+        recipient, amount = tx_data  # unpacking the tuple
         add_transaction(recipient, amount=amount)
         print(open_transactions)
     elif user_choice == '2':
