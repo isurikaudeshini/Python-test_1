@@ -54,7 +54,7 @@ def add_transaction(recipient, sender=owner, amount=1.0):
         'recipient': recipient,
         'amount': amount
     }  # A dictionary has been used to store transaction data
-    if verify_transaction(transaction):
+    if  verify_transaction(transaction):
         open_transactions.append(transaction)
         participants.add(sender)
         participants.add(recipient)
@@ -72,7 +72,7 @@ def mine_block():
         'amount' : MINING_REAWARD
     }
     copied_transactions = open_transactions[:]
-    open_transactions.append(reward_transaction)
+    copied_transactions.append(reward_transaction)
     
     # for key in last_block:
     #     value = last_block[key]
@@ -121,6 +121,8 @@ def verify_chain():
         if block['previous_hash'] != hash_block(blockchain[index-1]):
             return False
     return True
+def verify_transactions():
+    return all([verify_transaction(tx) for tx in open_transactions])
 
     #     if block_index == 0:
     #         block_index += 1
@@ -142,6 +144,7 @@ while waiting_for_input:
     print('2: Mine a new block ')
     print('3: Output the blockchain blocks ')
     print('4: Output participants')
+    print('5: Check transaction validity ')
     print('h: Manipulate the chain ')
     print('q: Quit')
     user_choice = get_user_choice()
@@ -160,6 +163,11 @@ while waiting_for_input:
         print_blockchain_elements()
     elif user_choice == '4':
         print(participants)
+    elif user_choice == '5':
+        if verify_transactions():
+            print('All transactions are valid!')
+        else:
+            print('There are invalid transactions')
     elif user_choice == 'h':
         if len(blockchain) >= 1:
             blockchain[0] = {
