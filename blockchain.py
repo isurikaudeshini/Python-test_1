@@ -1,4 +1,5 @@
 # initializing the genesis block, very first one
+MINING_REAWARD =10
 genesis_block = {
     'previous hash': '',
     'index': 0,
@@ -55,7 +56,13 @@ def add_transaction(recipient, sender=owner, amount=1.0):
 def mine_block():
     last_block = blockchain[-1]
     # list comprehensions, using a for loop
-    hashed_block = hash_block(last_block)
+    hashed_block = hash_block(last_block) 
+    reward_transaction ={
+        'sender' :'MINING',
+        'recipient' : owner,
+        'amount' : MINING_REAWARD
+    }
+    open_transactions.append(reward_transaction)
     
     # for key in last_block:
     #     value = last_block[key]
