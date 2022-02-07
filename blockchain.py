@@ -183,7 +183,8 @@ while waiting_for_input:
         print_blockchain_elements()
         print('Invalid blockchain, please try again.')
         break
-    print(get_balance('Isurika'))
+    #string formatting
+    print('Balance of {}: {:6.2f}'.format('Isurika', get_balance('Isurika'))) 
 else:
     print('User left')
 
