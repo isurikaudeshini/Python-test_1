@@ -1,4 +1,12 @@
 import functools  #gives access to reduce function
+import hashlib 
+import json  
+{
+    "field": "value",
+    "field1":[
+        {}
+    ]
+}
 # initializing the genesis block, very first one
 MINING_REAWARD =10
 genesis_block = {
@@ -13,7 +21,7 @@ participants = {'Isurika'}  #A "set" is initialized here, *mutable *unordered li
 
 
 def hash_block(block):
-    return '-'.join([str(block[key]) for key in block])
+    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
 def get_balance(participant):
     tx_sender = [[tx['amount'] for tx in block['transactions']if tx['sender'] == participant] for block in blockchain]
@@ -63,7 +71,8 @@ def add_transaction(recipient, sender=owner, amount=1.0):
 def mine_block():
     last_block = blockchain[-1]
     # list comprehensions, using a for loop
-    hashed_block = hash_block(last_block) 
+    hashed_block = hash_block(last_block)
+    print(hashed_block) 
     reward_transaction ={
         'sender' :'MINING',
         'recipient' : owner,
