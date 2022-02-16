@@ -2,12 +2,13 @@ from uuid import uuid4
 
 from blockchain import Blockchain
 from utility.verification import Verification
+from wallet import Wallet
 
 class Node:
     def __init__(self):
-        # self.id = str(uuid4())
-        self.id ="Isurika"
-        self.blockchain = Blockchain(self.id)
+        # self.wallet.public_key = str(uuid4())
+        self.wallet = Wallet()
+        self.blockchain = Blockchain(self.wallet.public_key)
        
     def get_transaction_value(self):
         """Returns the input of the user.(a new transaction amount)"""
@@ -44,12 +45,14 @@ class Node:
             print('2: Mine a new block ')
             print('3: Output the blockchain blocks ')
             print('4: Check transaction validity ')
+            print('5: Create wallet ')
+            print('6: Load wallet ')
             print('q: Quit')
             user_choice = self.get_user_choice()
             if user_choice == '1':
                 tx_data = self.get_transaction_value()
                 recipient, amount = tx_data  # unpacking the tuple
-                if self.blockchain.add_transaction(recipient, self.id, amount=amount):
+                if self.blockchain.add_transaction(recipient, self.wallet.public_key, amount=amount):
                     print('Added transaction')
                 else:
                     print('Transaction failed!')
@@ -63,6 +66,10 @@ class Node:
                     print('All transactions are valid!')
                 else:
                     print('There are invalid transactions')
+            elif user_choice == '5':
+                self.wallet.create_keys()
+            elif user_choice == '6':
+                pass
             elif user_choice == 'q':
                 waiting_for_input = False
             else:
@@ -72,7 +79,7 @@ class Node:
                 print('Invalid blockchain, please try again.')
                 break
             # string formatting
-            print('Balance of {}: {:6.2f}'.format(self.id, self.blockchain.get_balance()))
+            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key, self.blockchain.get_balance()))
         else:
             print('User left')
 
