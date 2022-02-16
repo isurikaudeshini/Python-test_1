@@ -11,6 +11,8 @@ from transaction import Transaction
 
 MINING_REAWARD = 10
 
+print(__name__)
+
 class Blockchain:
     def __init__(self, hosting_node_id):
         genesis_block = Block(0, '', [], 100, 0)
