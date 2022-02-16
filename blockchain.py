@@ -129,6 +129,8 @@ class Blockchain:
         #     'recipient': recipient,
         #     'amount': amount
         # }  # A dictionary has been used to store transaction data
+        if self.hosting_node == None:
+            return False
         transaction = Transaction(sender, recipient, amount)
         if Verification.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
@@ -138,7 +140,8 @@ class Blockchain:
 
 
     def mine_block(self):
-
+        if self.hosting_node == None:
+            return False
         last_block = self.__chain[-1]
         # list comprehensions, using a for loop
         hashed_block = hash_block(last_block)
