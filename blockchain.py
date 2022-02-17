@@ -52,9 +52,9 @@ class Blockchain:
                 open_transactions = json.loads(file_content[1])
                 updated_transactions = []
                 for tx in open_transactions:
-                    updated_transactions = Transaction(
+                    updated_transaction = Transaction(
                         tx['sender'], tx['recipient'], tx['signature'], tx['amount'])
-                    updated_transactions.append(updated_transactions)
+                    updated_transactions.append(updated_transaction)
                 self.__open_transactions = updated_transactions
         except (IOError, IndexError):
             print('Handled exception...')
@@ -112,9 +112,6 @@ class Blockchain:
         return self.__chain[-1]
 
 
-
-
-
     def add_transaction(self, recipient, sender, signature, amount=1.0):
         """Append a new value as well as the last blockchain value to the blockchain
 
@@ -131,8 +128,6 @@ class Blockchain:
         if self.hosting_node == None:
             return False
         transaction = Transaction(sender, recipient, signature, amount)
-        if not Wallet.verify_transaction(transaction):
-            return False
         if Verification.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
             self.save_data()
@@ -154,25 +149,20 @@ class Blockchain:
         reward_transaction = Transaction('MINING', self.hosting_node, '', MINING_REAWARD)
 
         copied_transactions = self.__open_transactions[:]
+        for tx in copied_transactions:
+            if not Wallet.verify_transaction(tx):
+                return False
         copied_transactions.append(reward_transaction)
 
         # for key in last_block:
         #     value = last_block[key]
         #     hashed_block = hashed_block + str(value)
         block = Block(len(self.__chain), hashed_block, copied_transactions, proof)
-        for tx in block.transactions:
-            if not Wallet.verify_transaction(tx):
-                return False
+        
         self.__chain.append(block)
         self.__open_transactions = []
         self.save_data()
         return True
-
-
-
-
-
-
 
 
     #     if block_index == 0:
